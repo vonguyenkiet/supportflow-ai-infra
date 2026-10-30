@@ -2,3 +2,5 @@
 .env.local
 _sources/
 *.log
+__pycache__/
+*.pyc

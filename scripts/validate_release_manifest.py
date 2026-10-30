@@ -2,6 +2,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas" / "release-manifest.schema.json"
@@ -11,12 +12,14 @@ def validate_manifest(manifest_path: Path):
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
 
-    # Required top-level keys
-    for key in schema["required"]:
-        if key not in manifest:
-            raise ValueError(f"Missing required key: {key}")
+    # 1. JSON Schema Draft 2020-12 full schema validation
+    validator = Draft202012Validator(schema)
+    errors = sorted(validator.iter_errors(manifest), key=lambda e: e.path)
+    if errors:
+        error_msgs = "\n".join(f"  - {'/'.join(str(p) for p in err.path)}: {err.message}" for err in errors)
+        raise ValueError(f"JSON Schema Draft 2020-12 validation failed for {manifest_path.name}:\n{error_msgs}")
 
-    # Check commit SHAs and workflow references
+    # 2. Check commit SHAs and workflow references
     for comp_name in ["backend", "web", "aiService", "infrastructure"]:
         comp = manifest["components"].get(comp_name)
         if not comp:
@@ -28,7 +31,7 @@ def validate_manifest(manifest_path: Path):
         if not comp.get("workflowRunUrl") or not comp.get("workflowRunId"):
             raise ValueError(f"Missing workflowRunUrl or workflowRunId for {comp_name}")
 
-    # Verify immutable image digests and tag-to-buildCommit invariants in artifacts
+    # 3. Verify immutable image digests and tag-to-buildCommit invariants in artifacts
     for comp_name, comp in manifest["components"].items():
         build_sha = comp["buildCommit"]
         expected_tag = f"sha-{build_sha}"
@@ -48,14 +51,29 @@ def validate_manifest(manifest_path: Path):
                 if digest is not None:
                     raise ValueError(f"{status.capitalize()} artifact {comp_name}.{art_name} must have null digest")
 
-    # Third party digests
+    # 4. Third party digests
     for name, ref in manifest["thirdPartyDependencies"].items():
         if "@sha256:" not in ref:
             raise ValueError(f"Third-party image {name} must be pinned with @sha256: digest")
 
-    print(f"Validation successful: {manifest_path.name} matches schema and release rules.")
+    # 5. Database tool purpose clarity
+    db_tool = manifest.get("databaseMigration", {})
+    if not db_tool.get("toolPurpose"):
+        raise ValueError("databaseMigration.toolPurpose must clearly describe the migration/seeding tool")
+
+    print(f"Validation successful: {manifest_path.name} matches JSON Schema Draft 2020-12 and release rules.")
+    return manifest
+
+
+def main(argv=None):
+    target = Path(argv[0]) if argv else ROOT / "releases" / "release-1.0.0-rc1.json"
+    try:
+        validate_manifest(target)
+        return 0
+    except Exception as exc:
+        print(f"VALIDATION FAILED: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
-    target = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "releases" / "release-1.0.0-rc1.json"
-    validate_manifest(target)
+    sys.exit(main(sys.argv[1:]))
