@@ -21,15 +21,25 @@ def validate_manifest(manifest_path: Path):
         comp = manifest["components"].get(comp_name)
         if not comp:
             raise ValueError(f"Missing component: {comp_name}")
-        commit = comp.get("commit", "")
-        if not re.fullmatch(r"[0-9a-f]{40}", commit):
-            raise ValueError(f"Invalid full commit SHA for {comp_name}: {commit}")
+        for ctype in ["baselineCommit", "buildCommit"]:
+            sha = comp.get(ctype, "")
+            if not re.fullmatch(r"[0-9a-f]{40}", sha):
+                raise ValueError(f"Invalid full commit SHA for {comp_name}.{ctype}: {sha}")
 
-    # Verify immutable image digests or tags format
+    # Verify immutable image digests or tags format in artifacts
     for comp_name, comp in manifest["components"].items():
-        for img_role, img_ref in comp.get("images", {}).items():
-            if not isinstance(img_ref, str) or not img_ref.startswith("ghcr.io/supportflow-ai/"):
-                raise ValueError(f"Invalid image repository for {comp_name}.{img_role}: {img_ref}")
+        for art_name, art in comp.get("artifacts", {}).items():
+            img = art.get("image", "")
+            if not img.startswith("ghcr.io/supportflow-ai/"):
+                raise ValueError(f"Invalid image repository for {comp_name}.{art_name}: {img}")
+            status = art.get("publicationStatus")
+            digest = art.get("digest")
+            if status == "published":
+                if not digest or not digest.startswith("sha256:"):
+                    raise ValueError(f"Published artifact {comp_name}.{art_name} must have a valid sha256 digest")
+            elif status in ("pending", "blocked"):
+                if digest is not None:
+                    raise ValueError(f"{status.capitalize()} artifact {comp_name}.{art_name} must have null digest")
 
     # Third party digests
     for name, ref in manifest["thirdPartyDependencies"].items():

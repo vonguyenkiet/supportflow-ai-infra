@@ -26,70 +26,140 @@
       "properties": {
         "backend": {
           "type": "object",
-          "required": ["repository", "branch", "commit", "images"],
+          "required": [
+            "repository",
+            "branch",
+            "baselineCommit",
+            "buildCommit",
+            "workflowRunId",
+            "workflowRunUrl",
+            "artifacts"
+          ],
           "properties": {
             "repository": { "type": "string" },
             "branch": { "type": "string" },
-            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
-            "images": {
+            "artifacts": {
               "type": "object",
               "required": ["api", "worker", "database"],
-              "properties": {
-                "api": { "type": "string" },
-                "worker": { "type": "string" },
-                "database": { "type": "string" }
+              "additionalProperties": {
+                "type": "object",
+                "required": ["image", "tag", "digest", "publicationStatus", "description"],
+                "properties": {
+                  "image": { "type": "string" },
+                  "tag": { "type": "string" },
+                  "digest": { "type": ["string", "null"] },
+                  "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
+                  "description": { "type": "string" }
+                }
               }
             }
           }
         },
         "web": {
           "type": "object",
-          "required": ["repository", "branch", "commit", "images"],
+          "required": [
+            "repository",
+            "branch",
+            "baselineCommit",
+            "buildCommit",
+            "workflowRunId",
+            "workflowRunUrl",
+            "artifacts"
+          ],
           "properties": {
             "repository": { "type": "string" },
             "branch": { "type": "string" },
-            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
-            "images": {
+            "artifacts": {
               "type": "object",
               "required": ["web"],
-              "properties": {
-                "web": { "type": "string" }
+              "additionalProperties": {
+                "type": "object",
+                "required": ["image", "tag", "digest", "publicationStatus", "description"],
+                "properties": {
+                  "image": { "type": "string" },
+                  "tag": { "type": "string" },
+                  "digest": { "type": ["string", "null"] },
+                  "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
+                  "description": { "type": "string" }
+                }
               }
             }
           }
         },
         "aiService": {
           "type": "object",
-          "required": ["repository", "branch", "commit", "images"],
+          "required": [
+            "repository",
+            "branch",
+            "baselineCommit",
+            "buildCommit",
+            "workflowRunId",
+            "workflowRunUrl",
+            "artifacts"
+          ],
           "properties": {
             "repository": { "type": "string" },
             "branch": { "type": "string" },
-            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
-            "images": {
+            "artifacts": {
               "type": "object",
               "required": ["aiService"],
-              "properties": {
-                "aiService": { "type": "string" }
+              "additionalProperties": {
+                "type": "object",
+                "required": ["image", "tag", "digest", "publicationStatus", "description"],
+                "properties": {
+                  "image": { "type": "string" },
+                  "tag": { "type": "string" },
+                  "digest": { "type": ["string", "null"] },
+                  "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
+                  "description": { "type": "string" }
+                }
               }
             }
           }
         },
         "infrastructure": {
           "type": "object",
-          "required": ["repository", "branch", "commit", "images"],
+          "required": [
+            "repository",
+            "branch",
+            "baselineCommit",
+            "buildCommit",
+            "workflowRunId",
+            "workflowRunUrl",
+            "artifacts"
+          ],
           "properties": {
             "repository": { "type": "string" },
             "branch": { "type": "string" },
-            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
-            "images": {
+            "artifacts": {
               "type": "object",
               "required": ["minio"],
-              "properties": {
-                "minio": { "type": "string" }
+              "additionalProperties": {
+                "type": "object",
+                "required": ["image", "tag", "digest", "publicationStatus", "description"],
+                "properties": {
+                  "image": { "type": "string" },
+                  "tag": { "type": "string" },
+                  "digest": { "type": ["string", "null"] },
+                  "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
+                  "description": { "type": "string" }
+                }
               }
             }
           }
@@ -106,9 +176,10 @@
     },
     "databaseMigration": {
       "type": "object",
-      "required": ["currentMigration"],
+      "required": ["currentMigration", "toolPurpose"],
       "properties": {
-        "currentMigration": { "type": "string" }
+        "currentMigration": { "type": "string" },
+        "toolPurpose": { "type": "string" }
       }
     }
   }
