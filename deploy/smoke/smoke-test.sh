@@ -47,7 +47,7 @@ ATTACHMENT_PAYLOAD=$(node -e 'process.stdout.write(JSON.stringify({fileName:"smo
 curl --fail --silent --show-error "$BASE_URL/api/tickets/$TICKET_ID/attachments/upload-url" \
   -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" \
   -d "$ATTACHMENT_PAYLOAD" |
-  node -e 'const r=JSON.parse(require("fs").readFileSync(0)); if(!r.uploadUrl||!r.key) process.exit(1)'
+  node -e 'const r=JSON.parse(require("fs").readFileSync(0)); if(!r.uploadUrl||!r.storageKey) process.exit(1)'
 echo '[8/9] Presigned upload URL passed'
 
 AGENT_LOGIN=$(node -e 'process.stdout.write(JSON.stringify({email:"agent@test.com",password:"Test@1234"}))')
