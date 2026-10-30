@@ -79,13 +79,13 @@
       "branch": "codex/infra-handoff",
       "baselineCommit": "80cdadada5e7bb253427161ea801c82866539ba0",
       "sourceCommit": "80cdadada5e7bb253427161ea801c82866539ba0",
-      "buildCommit": "971b9d675d587cbd8f4f0964b933efa98ed208f6",
-      "workflowRunId": 41119175623,
-      "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/41119175623",
+      "buildCommit": "2259d3055cafc211ecd8eecf258f5c60de4b5bdf",
+      "workflowRunId": 41121663475,
+      "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/41121663475",
       "artifacts": {
         "minio": {
           "image": "ghcr.io/supportflow-ai/servicedesk-minio",
-          "tag": "sha-971b9d675d587cbd8f4f0964b933efa98ed208f6",
+          "tag": "sha-2259d3055cafc211ecd8eecf258f5c60de4b5bdf",
           "digest": null,
           "publicationStatus": "pending",
           "description": "Custom built MinIO object storage from upstream Go source"
