@@ -42,6 +42,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install manifest validation dependencies
+        run: pip install jsonschema
+      - name: Run manifest validator unit tests
+        run: python -m unittest discover -s scripts/tests -p "test_*.py"
       - name: Validate release manifest schema
         run: python scripts/validate_release_manifest.py
       - name: Validate configuration
@@ -66,7 +70,7 @@ jobs:
     name: Publish MinIO image to GHCR
     runs-on: ubuntu-24.04
     needs: smoke
-    if: github.repository_owner == 'supportflow-ai' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/codex/infra-handoff' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/devops/'))
+    if: github.repository_owner == 'supportflow-ai' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/codex/infra-handoff' || github.ref == 'refs/heads/main')
     permissions:
       contents: read
       packages: write
