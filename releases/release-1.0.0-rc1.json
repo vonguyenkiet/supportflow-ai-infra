@@ -75,9 +75,9 @@
       "repository": "supportflow-ai/supportflow-ai-infra",
       "branch": "codex/infra-handoff",
       "baselineCommit": "80cdadada5e7bb253427161ea801c82866539ba0",
-      "buildCommit": "b9db8ce41a5d16b9fbcaeb31beda903027a46673",
-      "workflowRunId": 41117095978,
-      "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/41117095978",
+      "buildCommit": "971b9d675d587cbd8f4f0964b933efa98ed208f6",
+      "workflowRunId": 41119175623,
+      "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/41119175623",
       "artifacts": {
         "minio": {
           "image": "ghcr.io/supportflow-ai/servicedesk-minio",
