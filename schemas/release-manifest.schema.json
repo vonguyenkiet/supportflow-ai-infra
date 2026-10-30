@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SupportFlowReleaseManifest",
+  "type": "object",
+  "required": [
+    "releaseId",
+    "version",
+    "createdAt",
+    "status",
+    "components",
+    "thirdPartyDependencies",
+    "databaseMigration"
+  ],
+  "properties": {
+    "releaseId": { "type": "string" },
+    "version": { "type": "string" },
+    "previousReleaseId": { "type": ["string", "null"] },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["prepared", "verified", "rejected"]
+    },
+    "components": {
+      "type": "object",
+      "required": ["backend", "web", "aiService", "infrastructure"],
+      "properties": {
+        "backend": {
+          "type": "object",
+          "required": ["repository", "branch", "commit", "images"],
+          "properties": {
+            "repository": { "type": "string" },
+            "branch": { "type": "string" },
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunUrl": { "type": "string" },
+            "images": {
+              "type": "object",
+              "required": ["api", "worker", "database"],
+              "properties": {
+                "api": { "type": "string" },
+                "worker": { "type": "string" },
+                "database": { "type": "string" }
+              }
+            }
+          }
+        },
+        "web": {
+          "type": "object",
+          "required": ["repository", "branch", "commit", "images"],
+          "properties": {
+            "repository": { "type": "string" },
+            "branch": { "type": "string" },
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunUrl": { "type": "string" },
+            "images": {
+              "type": "object",
+              "required": ["web"],
+              "properties": {
+                "web": { "type": "string" }
+              }
+            }
+          }
+        },
+        "aiService": {
+          "type": "object",
+          "required": ["repository", "branch", "commit", "images"],
+          "properties": {
+            "repository": { "type": "string" },
+            "branch": { "type": "string" },
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunUrl": { "type": "string" },
+            "images": {
+              "type": "object",
+              "required": ["aiService"],
+              "properties": {
+                "aiService": { "type": "string" }
+              }
+            }
+          }
+        },
+        "infrastructure": {
+          "type": "object",
+          "required": ["repository", "branch", "commit", "images"],
+          "properties": {
+            "repository": { "type": "string" },
+            "branch": { "type": "string" },
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "workflowRunUrl": { "type": "string" },
+            "images": {
+              "type": "object",
+              "required": ["minio"],
+              "properties": {
+                "minio": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "thirdPartyDependencies": {
+      "type": "object",
+      "required": ["postgres", "nginx"],
+      "properties": {
+        "postgres": { "type": "string" },
+        "nginx": { "type": "string" }
+      }
+    },
+    "databaseMigration": {
+      "type": "object",
+      "required": ["currentMigration"],
+      "properties": {
+        "currentMigration": { "type": "string" }
+      }
+    }
+  }
+}

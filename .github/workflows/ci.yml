@@ -39,6 +39,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate release manifest schema
+        run: python scripts/validate_release_manifest.py
       - name: Validate configuration
         run: docker compose --env-file .env.local.example -f compose.yaml -f compose.local.yaml config --quiet
       - name: Build and start disposable stack
@@ -56,3 +61,44 @@ jobs:
       - name: Remove disposable CI stack
         if: always()
         run: docker compose --env-file .env.local.example -f compose.yaml -f compose.local.yaml down -v
+
+  publish-minio:
+    name: Publish MinIO image to GHCR
+    runs-on: ubuntu-24.04
+    needs: smoke
+    if: github.repository_owner == 'supportflow-ai' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/codex/infra-handoff' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/devops/'))
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Build and push MinIO image
+        id: build-minio
+        run: |
+          IMAGE="ghcr.io/supportflow-ai/servicedesk-minio:sha-${{ github.sha }}"
+          docker build -f deploy/minio/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE" 2>/dev/null | awk -F'@' '{print $2}')
+          echo "minio_digest=$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "MinIO Digest: $DIGEST"
+      - name: Record published MinIO artifact digest
+        run: |
+          mkdir -p artifacts/ghcr
+          cat <<EOF > artifacts/ghcr/minio-digest.json
+          {
+            "repository": "${{ github.repository }}",
+            "commit": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "publishedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "images": {
+              "minio": "ghcr.io/supportflow-ai/servicedesk-minio@${{ steps.build-minio.outputs.minio_digest }}"
+            }
+          }
+          EOF
+          cat artifacts/ghcr/minio-digest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: minio-ghcr-digest-${{ github.sha }}
+          path: artifacts/ghcr/minio-digest.json

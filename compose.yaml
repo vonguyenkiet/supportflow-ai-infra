@@ -1,7 +1,7 @@
 {
   "services": {
     "postgres": {
-      "image": "pgvector/pgvector:pg17",
+      "image": "pgvector/pgvector:pg17@sha256:2db7d28517d1fba17c2da3210395f7be11a11b419246ad0da2edf782af72f367",
       "environment": {
         "POSTGRES_USER": "servicedesk",
         "POSTGRES_PASSWORD": "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}",
@@ -165,7 +165,7 @@
       ]
     },
     "nginx": {
-      "image": "nginx:alpine",
+      "image": "nginx:alpine@sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
       "ports": [
         "${GATEWAY_PORT:-80}:80"
       ],

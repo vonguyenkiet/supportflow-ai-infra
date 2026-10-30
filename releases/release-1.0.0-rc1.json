@@ -1,0 +1,55 @@
+{
+  "$schema": "../schemas/release-manifest.schema.json",
+  "releaseId": "rel-20261031-01",
+  "version": "1.0.0-rc1",
+  "previousReleaseId": null,
+  "createdAt": "2026-10-30T19:30:00Z",
+  "status": "prepared",
+  "components": {
+    "backend": {
+      "repository": "supportflow-ai/ai-it-service-desk",
+      "branch": "dev",
+      "commit": "44ba0b4b4fc1ad6f515f8485b83736eccb127491",
+      "workflowRunUrl": "https://github.com/supportflow-ai/ai-it-service-desk/actions/runs/41115110483",
+      "images": {
+        "api": "ghcr.io/supportflow-ai/servicedesk-api@sha256:f28277ad51197f7974e29ff944b0e259d22420ffa49726419a85dec32d8ef334",
+        "worker": "ghcr.io/supportflow-ai/servicedesk-worker@sha256:c10abca647303570a0589fe531a215c95b3c4673d884c8ef399337e163eba90b",
+        "database": "ghcr.io/supportflow-ai/servicedesk-database@sha256:f635c5790c4a526f7a640c02ef8911f61c746edbca67ce56a66fffd3cf1c8c01"
+      }
+    },
+    "web": {
+      "repository": "supportflow-ai/ai-it-service-desk-web",
+      "branch": "dev",
+      "commit": "fe42831726acc789c1d8eabe151ee3fd73597533",
+      "workflowRunUrl": "https://github.com/supportflow-ai/ai-it-service-desk-web/actions/runs/41115288227",
+      "images": {
+        "web": "ghcr.io/supportflow-ai/servicedesk-web:sha-fb59a8e03e48873ad92a344933a39e94ffeb7966"
+      }
+    },
+    "aiService": {
+      "repository": "supportflow-ai/ai-service",
+      "branch": "ai-service",
+      "commit": "66d5cefd846b40d6e2c0e793c589037dfa36e042",
+      "workflowRunUrl": "https://github.com/supportflow-ai/ai-service/actions/runs/40745235813",
+      "images": {
+        "aiService": "ghcr.io/supportflow-ai/servicedesk-ai-service:sha-28f850165a2ff025b5971ea944208ff99b6be2d6"
+      }
+    },
+    "infrastructure": {
+      "repository": "supportflow-ai/supportflow-ai-infra",
+      "branch": "codex/infra-handoff",
+      "commit": "80cdadada5e7bb253427161ea801c82866539ba0",
+      "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/39134993153",
+      "images": {
+        "minio": "ghcr.io/supportflow-ai/servicedesk-minio:sha-80cdadada5e7bb253427161ea801c82866539ba0"
+      }
+    }
+  },
+  "thirdPartyDependencies": {
+    "postgres": "pgvector/pgvector:pg17@sha256:2db7d28517d1fba17c2da3210395f7be11a11b419246ad0da2edf782af72f367",
+    "nginx": "nginx:alpine@sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3"
+  },
+  "databaseMigration": {
+    "currentMigration": "20261030055303_AddTicketAssignmentPriorityAndCollaboration"
+  }
+}
