@@ -30,6 +30,7 @@
             "repository",
             "branch",
             "baselineCommit",
+            "sourceCommit",
             "buildCommit",
             "workflowRunId",
             "workflowRunUrl",
@@ -39,6 +40,7 @@
             "repository": { "type": "string" },
             "branch": { "type": "string" },
             "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
@@ -50,8 +52,8 @@
                 "required": ["image", "tag", "digest", "publicationStatus", "description"],
                 "properties": {
                   "image": { "type": "string" },
-                  "tag": { "type": "string" },
-                  "digest": { "type": ["string", "null"] },
+                  "tag": { "type": "string", "pattern": "^sha-[0-9a-f]{40}$" },
+                  "digest": { "type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$" },
                   "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
                   "description": { "type": "string" }
                 }
@@ -65,6 +67,7 @@
             "repository",
             "branch",
             "baselineCommit",
+            "sourceCommit",
             "buildCommit",
             "workflowRunId",
             "workflowRunUrl",
@@ -74,6 +77,7 @@
             "repository": { "type": "string" },
             "branch": { "type": "string" },
             "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
@@ -85,8 +89,8 @@
                 "required": ["image", "tag", "digest", "publicationStatus", "description"],
                 "properties": {
                   "image": { "type": "string" },
-                  "tag": { "type": "string" },
-                  "digest": { "type": ["string", "null"] },
+                  "tag": { "type": "string", "pattern": "^sha-[0-9a-f]{40}$" },
+                  "digest": { "type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$" },
                   "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
                   "description": { "type": "string" }
                 }
@@ -100,6 +104,7 @@
             "repository",
             "branch",
             "baselineCommit",
+            "sourceCommit",
             "buildCommit",
             "workflowRunId",
             "workflowRunUrl",
@@ -109,6 +114,7 @@
             "repository": { "type": "string" },
             "branch": { "type": "string" },
             "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
@@ -120,8 +126,8 @@
                 "required": ["image", "tag", "digest", "publicationStatus", "description"],
                 "properties": {
                   "image": { "type": "string" },
-                  "tag": { "type": "string" },
-                  "digest": { "type": ["string", "null"] },
+                  "tag": { "type": "string", "pattern": "^sha-[0-9a-f]{40}$" },
+                  "digest": { "type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$" },
                   "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
                   "description": { "type": "string" }
                 }
@@ -135,6 +141,7 @@
             "repository",
             "branch",
             "baselineCommit",
+            "sourceCommit",
             "buildCommit",
             "workflowRunId",
             "workflowRunUrl",
@@ -144,6 +151,7 @@
             "repository": { "type": "string" },
             "branch": { "type": "string" },
             "baselineCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "buildCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "workflowRunId": { "type": ["integer", "string"] },
             "workflowRunUrl": { "type": "string" },
@@ -155,8 +163,8 @@
                 "required": ["image", "tag", "digest", "publicationStatus", "description"],
                 "properties": {
                   "image": { "type": "string" },
-                  "tag": { "type": "string" },
-                  "digest": { "type": ["string", "null"] },
+                  "tag": { "type": "string", "pattern": "^sha-[0-9a-f]{40}$" },
+                  "digest": { "type": ["string", "null"], "pattern": "^(sha256:[0-9a-f]{64})?$" },
                   "publicationStatus": { "type": "string", "enum": ["published", "pending", "blocked"] },
                   "description": { "type": "string" }
                 }

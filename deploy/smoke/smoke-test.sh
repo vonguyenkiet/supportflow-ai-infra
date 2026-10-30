@@ -50,6 +50,14 @@ curl --fail --silent --show-error "$BASE_URL/api/tickets/$TICKET_ID/attachments/
   node -e 'const r=JSON.parse(require("fs").readFileSync(0)); if(!r.uploadUrl||!r.storageKey) process.exit(1)'
 echo '[8/9] Presigned upload URL passed'
 
+# Step 9: Agent queue RBAC verification (negative: Requester 403, positive: Agent 200)
+REQUESTER_QUEUE_STATUS=$(curl --silent --output /dev/null --write-out '%{http_code}' "$BASE_URL/api/tickets/queue?page=1&pageSize=10" \
+  -H "Authorization: Bearer $TOKEN")
+if [ "$REQUESTER_QUEUE_STATUS" != "403" ]; then
+  echo "Expected 403 Forbidden for requester on /api/tickets/queue, got $REQUESTER_QUEUE_STATUS" >&2
+  exit 1
+fi
+
 AGENT_LOGIN=$(node -e 'process.stdout.write(JSON.stringify({email:"agent@test.com",password:"Test@1234"}))')
 AGENT_TOKEN=$(curl --fail --silent --show-error "$BASE_URL/api/auth/login" \
   -H 'Content-Type: application/json' -d "$AGENT_LOGIN" |
@@ -58,4 +66,4 @@ AGENT_TOKEN=$(curl --fail --silent --show-error "$BASE_URL/api/auth/login" \
 curl --fail --silent --show-error "$BASE_URL/api/tickets/queue?page=1&pageSize=10" \
   -H "Authorization: Bearer $AGENT_TOKEN" |
   node -e 'const r=JSON.parse(require("fs").readFileSync(0)); if(!Array.isArray(r.items)||typeof r.totalCount!=="number") process.exit(1)'
-echo '[9/9] Agent queue passed'
+echo '[9/9] Agent queue RBAC passed (Requester 403, Agent 200)'

@@ -10,6 +10,7 @@
       "repository": "supportflow-ai/ai-it-service-desk",
       "branch": "dev",
       "baselineCommit": "44ba0b4b4fc1ad6f515f8485b83736eccb127491",
+      "sourceCommit": "44ba0b4b4fc1ad6f515f8485b83736eccb127491",
       "buildCommit": "adb43ae4de5f575b4bfd9559ae96105034a74022",
       "workflowRunId": 41115110483,
       "workflowRunUrl": "https://github.com/supportflow-ai/ai-it-service-desk/actions/runs/41115110483",
@@ -41,6 +42,7 @@
       "repository": "supportflow-ai/ai-it-service-desk-web",
       "branch": "dev",
       "baselineCommit": "fe42831726acc789c1d8eabe151ee3fd73597533",
+      "sourceCommit": "fe42831726acc789c1d8eabe151ee3fd73597533",
       "buildCommit": "fb59a8e04c8fa104daed4886cf3b8eb6fc807477",
       "workflowRunId": 41115261596,
       "workflowRunUrl": "https://github.com/supportflow-ai/ai-it-service-desk-web/actions/runs/41115261596",
@@ -48,8 +50,8 @@
         "web": {
           "image": "ghcr.io/supportflow-ai/servicedesk-web",
           "tag": "sha-fb59a8e04c8fa104daed4886cf3b8eb6fc807477",
-          "digest": null,
-          "publicationStatus": "blocked",
+          "digest": "sha256:3d787fe41b27c55c54ae2b1bb35c0cc127ec0ee40996790a47d66ce411caedc7",
+          "publicationStatus": "published",
           "description": "React 19 + TypeScript frontend production build served via NGINX"
         }
       }
@@ -58,6 +60,7 @@
       "repository": "supportflow-ai/ai-service",
       "branch": "ai-service",
       "baselineCommit": "66d5cefd846b40d6e2c0e793c589037dfa36e042",
+      "sourceCommit": "66d5cefd846b40d6e2c0e793c589037dfa36e042",
       "buildCommit": "28f85014c391355b4791b9e1a65a1c215b41bac7",
       "workflowRunId": 41115433754,
       "workflowRunUrl": "https://github.com/supportflow-ai/ai-service/actions/runs/41115433754",
@@ -75,13 +78,14 @@
       "repository": "supportflow-ai/supportflow-ai-infra",
       "branch": "codex/infra-handoff",
       "baselineCommit": "80cdadada5e7bb253427161ea801c82866539ba0",
+      "sourceCommit": "80cdadada5e7bb253427161ea801c82866539ba0",
       "buildCommit": "971b9d675d587cbd8f4f0964b933efa98ed208f6",
       "workflowRunId": 41119175623,
       "workflowRunUrl": "https://github.com/supportflow-ai/supportflow-ai-infra/actions/runs/41119175623",
       "artifacts": {
         "minio": {
           "image": "ghcr.io/supportflow-ai/servicedesk-minio",
-          "tag": "sha-80cdadada5e7bb253427161ea801c82866539ba0",
+          "tag": "sha-971b9d675d587cbd8f4f0964b933efa98ed208f6",
           "digest": null,
           "publicationStatus": "pending",
           "description": "Custom built MinIO object storage from upstream Go source"
